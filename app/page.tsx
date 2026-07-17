@@ -37,22 +37,22 @@ function PinCard({
         <h2>{repo.name}</h2>
         <p className="desc">{repo.description ?? "—"}</p>
         <div className="row">
-          <span className="k">last push</span>
+          <span className="k">LAST PUSH</span>
           <span>
             <Dot tone={r.tone} />
             {r.label}
           </span>
         </div>
         <div className="row">
-          <span className="k">open PRs</span>
-          <span className="prbadge">{prs}</span>
+          <span className="k">OPEN PRS</span>
+          <span className={`prbadge ${prs === 0 ? "zero" : ""}`}>{prs}</span>
         </div>
         <div className="row">
-          <span className="k">deploy</span>
+          <span className="k">DEPLOY</span>
           <span>
             <Dot tone={deployTone(deploy.state)} />
-            {deploy.state ?? "none"}
-            {deploy.environment ? ` (${deploy.environment})` : ""}
+            {deploy.state ?? "NONE"}
+            {deploy.environment ? ` [${deploy.environment.toUpperCase()}]` : ""}
           </span>
         </div>
       </div>
@@ -68,12 +68,14 @@ export default async function Page() {
   const deploys = await Promise.all(pinned.map((r) => getDeployInfo(r.name)));
   const rest = repos.filter((r) => !pinned.includes(r));
 
+  const generatedAt = new Date().toISOString().replace("T", " ").substring(0, 19) + " UTC";
+
   return (
     <main>
       <header className="deck">
-        <h1>Portfolio Deck</h1>
+        <h1>[ MAZOS_PORTFOLIO_DECK ]</h1>
         <span className="stamp">
-          {repos.length} repos · refreshed every 5 min
+          {repos.length} REPOS · {generatedAt}
         </span>
       </header>
 
@@ -88,42 +90,45 @@ export default async function Page() {
         ))}
       </section>
 
-      <table>
-        <thead>
-          <tr>
-            <th>repo</th>
-            <th>last push</th>
-            <th className="num">open PRs</th>
-            <th>visibility</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rest.map((repo) => {
-            const r = recency(repo.pushed_at);
-            return (
-              <tr key={repo.name}>
-                <td>
-                  <a href={repo.html_url} target="_blank" rel="noreferrer">
-                    {repo.name}
-                  </a>
-                </td>
-                <td>
-                  <Dot tone={r.tone} />
-                  {r.label}
-                </td>
-                <td className="num prbadge">
-                  {prCounts.get(repo.name) ?? 0}
-                </td>
-                <td>{repo.private ? "private" : "public"}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>REPO</th>
+              <th>LAST PUSH</th>
+              <th className="num">OPEN PRS</th>
+              <th>VISIBILITY</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rest.map((repo) => {
+              const r = recency(repo.pushed_at);
+              const prs = prCounts.get(repo.name) ?? 0;
+              return (
+                <tr key={repo.name}>
+                  <td>
+                    <a href={repo.html_url} target="_blank" rel="noreferrer">
+                      {repo.name}
+                    </a>
+                  </td>
+                  <td>
+                    <Dot tone={r.tone} />
+                    {r.label.toUpperCase()}
+                  </td>
+                  <td className={`num prbadge ${prs === 0 ? "zero" : ""}`}>
+                    {prs}
+                  </td>
+                  <td className="visibility">{repo.private ? "PRIVATE" : "PUBLIC"}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       <footer>
-        green &lt;48h · amber &lt;14d · red stale — set GITHUB_TOKEN to include
-        private repos and raise rate limits
+        &gt;&gt; SYS_READY. GREEN &lt;48H | AMBER &lt;14D | RED STALE. <br />
+        &gt;&gt; SET GITHUB_TOKEN TO INCLUDE PRIVATE REPOS &amp; RAISE RATE LIMITS.
       </footer>
     </main>
   );
