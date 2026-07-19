@@ -38,7 +38,9 @@ export async function getRepos(): Promise<Repo[]> {
   const res = await fetch(url, { headers: headers(), ...revalidate });
   if (!res.ok) throw new Error(`GitHub repos fetch failed: ${res.status}`);
   const repos = (await res.json()) as Repo[];
-  return repos.filter((r) => !r.fork && !r.archived);
+  // Public boundary enforced at the source, not the page: a token makes
+  // /user/repos return private repos, and this feeds a public portfolio.
+  return repos.filter((r) => !r.fork && !r.archived && !r.private);
 }
 
 /** Open PR count per repo, from one search call instead of N list calls. */

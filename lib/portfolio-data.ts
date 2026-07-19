@@ -1,4 +1,4 @@
-export type ProjectStatus = "Live" | "Active Development";
+export type ProjectStatus = "Live" | "Active Development" | "Concept";
 
 export interface PortfolioProject {
   title: string;
@@ -20,10 +20,10 @@ export const PROJECTS: PortfolioProject[] = [
   {
     title: "JobFilter",
     description:
-      "Smart recruitment and filtering engine. Scores inbound roles against configurable signal profiles, cutting screening time from hours to minutes.",
-    techStack: ["Next.js", "TypeScript", "Postgres", "LLM Pipelines"],
+      "Lead-filtering engine for UK trades. Turns live Contracts Finder procurement notices into scored, winnable work — signal over noise, no chasing.",
+    techStack: ["Next.js", "TypeScript", "LLM Pipelines"],
     status: "Live",
-    link: "https://github.com/manazoid4",
+    link: "https://github.com/manazoid4/JobFilterV1",
   },
   {
     title: "MAZos / Hermes",
@@ -38,7 +38,7 @@ export const PROJECTS: PortfolioProject[] = [
     description:
       "Modular build-automation layer that turns project specs into reproducible pipelines: scaffolding, CI wiring, and deploy targets from a single manifest.",
     techStack: ["TypeScript", "Node.js", "GitHub Actions"],
-    status: "Active Development",
+    status: "Concept",
     link: "https://github.com/manazoid4",
   },
   {
