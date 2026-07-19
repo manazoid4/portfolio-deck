@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Portfolio Deck",
-  description: "manazoid4 portfolio command dashboard",
+  title: "Manazir Hussain — System Architect, Founder, AI Engineer",
+  description:
+    "Portfolio of Manazir Hussain (@manazoid4): AI-native products, agent environments, and live shipping activity.",
 };
 
 export default function RootLayout({
